@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAM Portfolio</title>
+  <style>
+    :root {
+      --primary-color: #2C3E50;
+      --secondary-color: #ECF0F1;
+      --accent-color: #E74C3C;
+      --background-color: #F5F5F5;
+      --text-color: #333;
+    } 
+   
+    /* :root {
+      --primary-color: #1F618D;
+      --secondary-color: #D5DBDB;
+      --accent-color: #F1C40F;
+      --background-color: #FFFFFF;
+      --text-color: #2E4053;
+    } */
+    /* :root {
+      --primary-color: #34495E; 
+      --secondary-color: #BDC3C7;
+      --accent-color: #16A085;
+      --background-color: #ECF0F1;
+      --text-color: #2C3E50;
+    } */
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .section {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .project {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--secondary-color);
+      border: 1px solid var(--primary-color);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin: 20px;
+    }
+
+    .project-card-row {
+      
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Brand Anthony McDonald</h1>
+    <p>Training to be the World's Fastest Centenarian.</p>
+    <p>I Can Do Anything.</p>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Welcome to BAM Portfolio</h2>
+    <p>Discover my projects, skills, and what I’m passionate about.</p>
+  </section>
+
+  <section id="about" class="section">
+    <h2>About Me</h2>
+    <p>Introduce yourself. Share your story, skills, and professional journey.</p>
+  </section>
+
+  <section id="portfolio" class="section">
+    <h2>My Projects</h2>
+    <div class="project">
+      <div class="project-card-row">
+        <div class="project-card">294
+          <div><i class="fa-brands fa-python"></i></div>
+          <h3>Fit T. Cent: Get Fit & Enjoy Tryin'</h3>
+          <p>A Retrieval-Augmented Generation (RAG) system using open-source tools like Weaviate, Verba, and Ollama. Fit T. Cent, my personal AI assistant designed to answer fitness, wellness, and nutrition questions based on the evidence-based curriculums of the National Academy of Sports Medicine (NASM).</p>
+          <a target=”_blank” href="https://i.til.show/fit-t-cent-rag-tutorial-ver-0000">View Project</a>
+        </div>
+        <div class="project-card">
+          <h3>Food Recall App</h3>308
+          <p>Project Manager building a Food Recall Tracking App with Python, FastAPI, and MongoDB with the <a target="_blank" href="https://www.techbychoice.org/" >Tech By Choice Community</a>. Food recalls can have significant impacts on public health and safety, but tracking and understanding these recalls can be challenging. I built the api of the MVP using the <a target="_blank" href="https://fastapi.tiangolo.com/">Python FastAPI</a></p>
+          <a target=”_blank” href="https://github.com/TechByChoice/food-recall-app/tree/api">View Project.</a>
+        </div>
+      </div>
+      <div class="project-card-row">
+        <div class="project-card">
+          <h3>Elementary MBA</h3>302
+          <p>I make a living having discussions with children about financial literacy and small business. In addition to teaching computer science, and STEM using The Elementary MBA curriculum, KhanAcademy.org, and Code.org tools. Please visit Hirsch.Teamcfa.school and TheElementaryMBA.com to learn more about it.</p>
+          <a target=”_blank” href="https://i.til.show/fit-t-cent-rag-tutorial-ver-0000">View Project</a>
+        </div>
+        <div class="project-card">
+          <h3>World's Fastest Centenarian</h3>
+          <p>I'm training to be the world's fasest centenarian.</p>
+          <a target=”_blank” href="https://github.com/TechByChoice/food-recall-app/tree/api">View Project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="contact" class="section">
+    <h2>Contact Me</h2>
+    <p>Feel free to reach out via the following platforms:</p>
+    <ul>
+      <li><a target=”_blank” href="https://www.linkedin.com/in/brandanthonymcdonald">LinkedIn</a></li>
+      <li><a target=”_blank” href="https://github.com/dapperAuteur">GitHub</a></li>
+      <li><a href="mailto:a@awews.com?subject=I Saw Your Portfolio Site&body=Let's talk about working together.">Email</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Your Name. All rights reserved.</p>
+  </footer>
+</body>
+</html>
