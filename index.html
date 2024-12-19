@@ -86,6 +86,43 @@
       background-color: var(--primary-color);
       color: var(--secondary-color);
     }
+/* Modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+  }
   </style>
 <script>window.addEventListener('load', function () { var el = document.createElement('script'); el.setAttribute('src', 'https://client.consolto.com/iframeApp/iframeApp.js'); el.id = 'et-iframe'; el.async = true; el.setAttribute('data-widgetId', '6153673fc026597060d3764a'); el.setAttribute('data-version', 0.5); el.setAttribute('data-test', false); document.body.appendChild(el); }); </script>
 </head>
@@ -173,5 +210,48 @@
   <footer>
     <p>&copy; 2024 Brand Anthony McDonald. All rights reserved.</p>
   </footer>
+<div id="projectModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div id="modal-body">
+      <!-- Dynamic content will be loaded here -->
+    </div>
+  </div>
+</div>
+
+<!-- Add this JavaScript at the end of <body> -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("projectModal");
+    const modalBody = document.getElementById("modal-body");
+    const closeModal = document.querySelector(".close");
+
+    // Open modal and load content
+    document.querySelectorAll(".project-card a").forEach(link => {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        const projectContent = `
+          <h3>${this.parentNode.querySelector("h3").innerText}</h3>
+          <p>${this.parentNode.querySelector("p").innerText}</p>
+          <a href="${this.href}" target="_blank">Visit Project</a>
+        `;
+        modalBody.innerHTML = projectContent;
+        modal.style.display = "block";
+      });
+    });
+
+    // Close modal
+    closeModal.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+
+    // Close modal when clicking outside the content
+    window.addEventListener("click", function (e) {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+</script>
 </body>
 </html>
