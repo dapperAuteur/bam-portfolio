@@ -14,6 +14,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BAM Portfolio</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     :root {
       --primary-color: #2C3E50;
@@ -86,6 +87,15 @@
       background-color: var(--primary-color);
       color: var(--secondary-color);
     }
+    .chart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .controls {
+      margin-bottom: 20px;
+    }
 /* Modal styles */
   .modal {
     display: none;
@@ -123,6 +133,28 @@
     color: black;
     text-decoration: none;
   }
+    .close-btn {
+      display: block;
+      margin-left: auto;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .tooltip {
+      position: absolute;
+      background-color: white;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
   </style>
 <script>window.addEventListener('load', function () { var el = document.createElement('script'); el.setAttribute('src', 'https://client.consolto.com/iframeApp/iframeApp.js'); el.id = 'et-iframe'; el.async = true; el.setAttribute('data-widgetId', '6153673fc026597060d3764a'); el.setAttribute('data-version', 0.5); el.setAttribute('data-test', false); document.body.appendChild(el); }); </script>
 </head>
@@ -193,6 +225,7 @@
           <h3>RideWitUS Interactive</h3>
           <p>Use D3.JS to show mileage usage and investment overtime, <a target="_blank" href="https://brandanthonymcdonald.com/ride-wit-us-interactive">RideWitUS Interactive</a>.</p>
           <a target=”_blank” href="https://brandanthonymcdonald.com/ride-wit-us-interactive">View Project</a>
+        <button id="view-project-btn">View Project</button>
         </div>
       </div>
     </div>
@@ -210,48 +243,149 @@
   <footer>
     <p>&copy; 2024 Brand Anthony McDonald. All rights reserved.</p>
   </footer>
-<div id="projectModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <div id="modal-body">
-      <!-- Dynamic content will be loaded here -->
+  <div class="modal" id="visualization-modal">
+<div class="modal-content">
+    <div class="chart-container">
+        <div class="controls">
+          <label for="date-range">Filter by Date Range: </label>
+          <input type="range" id="date-range" min="0" max="4" step="1" value="4" />
+        </div>
+        <button class="close-btn" id="close-modal-btn">Close</button>
+        <div id="chart"></div>
+        <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
-</div>
+  </div>
 
 <!-- Add this JavaScript at the end of <body> -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const modal = document.getElementById("projectModal");
-    const modalBody = document.getElementById("modal-body");
-    const closeModal = document.querySelector(".close");
+    const data = [
+      { date: "2024-01", mileage: 25, cost: 100 },
+      { date: "2024-02", mileage: 27, cost: 95 },
+      { date: "2024-03", mileage: 24, cost: 110 },
+      { date: "2024-04", mileage: 28, cost: 90 },
+      { date: "2024-05", mileage: 26, cost: 100 },
+    ];
 
-    // Open modal and load content
-    document.querySelectorAll(".project-card a").forEach(link => {
-      link.addEventListener("click", function (e) {
-        e.preventDefault();
-        const projectContent = `
-          <h3>${this.parentNode.querySelector("h3").innerText}</h3>
-          <p>${this.parentNode.querySelector("p").innerText}</p>
-          <a href="${this.href}" target="_blank">Visit Project</a>
-        `;
-        modalBody.innerHTML = projectContent;
-        modal.style.display = "block";
-      });
+    const viewProjectBtn = document.getElementById("view-project-btn");
+    const closeModal = document.getElementById("close-modal-btn");
+    const modal = document.getElementById("visualization-modal");
+
+    viewProjectBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+      renderChart();
     });
 
-    // Close modal
-    closeModal.addEventListener("click", function () {
+    closeModal.addEventListener("click", () => {
       modal.style.display = "none";
+      d3.select("#chart").select("svg").remove(); // Remove chart when modal closes
     });
 
-    // Close modal when clicking outside the content
-    window.addEventListener("click", function (e) {
-      if (e.target === modal) {
-        modal.style.display = "none";
-      }
+    const renderChart = () => {
+      const margin = { top: 20, right: 50, bottom: 50, left: 50 };
+      const width = 800 - margin.left - margin.right;
+      const height = 400 - margin.top - margin.bottom;
+
+      const svg = d3.select("#chart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const x = d3.scaleTime()
+        .domain(d3.extent(data, d => new Date(d.date)))
+        .range([0, width]);
+
+      const yMileage = d3.scaleLinear()
+        .domain([20, d3.max(data, d => d.mileage)])
+        .range([height, 0]);
+
+      const yCost = d3.scaleLinear()
+        .domain([80, d3.max(data, d => d.cost)])
+        .range([height, 0]);
+        
+    const color = d3.scaleSequential(d3.interpolateBlues)
+      .domain([20, d3.max(data, d => d.cost)]);
+
+      const lineMileage = d3.line()
+        .x(d => x(new Date(d.date)))
+        .y(d => yMileage(d.mileage));
+
+      const lineCost = d3.line()
+        .x(d => x(new Date(d.date)))
+        .y(d => yCost(d.cost));
+
+      svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b")));
+
+      svg.append("g").call(d3.axisLeft(yMileage));
+      svg.append("g")
+        .attr("transform", `translate(${width},0)`)
+        .call(d3.axisRight(yCost));
+
+const updateGraph = (filteredData) => {
+      svg.selectAll(".line").remove();
+      svg.selectAll(".circle").remove();
+
+      // Mileage Line
+      svg.append("path")
+        .datum(filteredData)
+        .attr("class", "line")
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
+        .attr("d", lineMileage)
+        .style("opacity", 0)
+        .transition()
+        .duration(1000)
+        .style("opacity", 1);
+
+      // Cost Line
+      svg.append("path")
+        .datum(filteredData)
+        .attr("class", "line")
+        .attr("fill", "none")
+        .attr("stroke", "red")
+        .attr("stroke-width", 2)
+        .attr("d", lineCost)
+        .style("opacity", 0)
+        .transition()
+        .duration(1000)
+        .style("opacity", 1);
+
+      // Points
+      svg.selectAll(".circle")
+        .data(filteredData)
+        .join("circle")
+        .attr("class", "circle")
+        .attr("cx", d => x(new Date(d.date)))
+        .attr("cy", d => yMileage(d.mileage))
+        .attr("r", 5)
+        .attr("fill", d => color(d.cost))
+        .on("mouseover", (event, d) => {
+          d3.select("#tooltip")
+            .style("opacity", 1)
+            .style("left", `${event.pageX + 10}px`)
+            .style("top", `${event.pageY}px`)
+            .html(`Date: ${d.date}<br>Mileage: ${d.mileage} mpg<br>Cost: $${d.cost}`);
+        })
+        .on("mouseout", () => {
+          d3.select("#tooltip").style("opacity", 0);
+        });
+    };
+
+    const handleSliderChange = (value) => {
+      const filteredData = data.slice(0, +value + 1);
+      updateGraph(filteredData);
+    };
+
+    document.getElementById("date-range").addEventListener("input", (e) => {
+      handleSliderChange(e.target.value);
     });
-  });
-</script>
-</body>
+
+    updateGraph(data);
+    };
+  </script></body>
 </html>
