@@ -281,7 +281,7 @@
     });
 
     const renderChart = () => {
-      const margin = { top: 20, right: 50, bottom: 50, left: 50 };
+      const margin = { top: 20, right: 50, bottom: 50, left: 70 };
       const width = 600 - margin.left - margin.right;
       const height = 400 - margin.top - margin.bottom;
 
@@ -297,11 +297,11 @@
         .range([0, width]);
 
       const yMileage = d3.scaleLinear()
-        .domain([20, d3.max(data, d => d.mileage)])
+        .domain([20, d3.max(data, d => d.mileage) * 1.1])
         .range([height, 0]);
 
       const yCost = d3.scaleLinear()
-        .domain([80, d3.max(data, d => d.cost)])
+        .domain([80, d3.max(data, d => d.cost) * 1.1])
         .range([height, 0]);
         
     const color = d3.scaleSequential(d3.interpolateBlues)
@@ -318,14 +318,39 @@
       svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x)
-							.tickFormat(d3.timeFormat("%b"))
-								.ticks(data.length)
+							.tickFormat(d3.timeFormat("%b %Y"))
+								.ticks(width / 100)
 					);
 
-      svg.append("g").call(d3.axisLeft(yMileage));
+          // Original before labeling y-axis
+      // svg.append("g").call(d3.axisLeft(yMileage));
+      // svg.append("g")
+      //   .attr("transform", `translate(${width},0)`)
+      //   .call(d3.axisRight(yCost));
+
+      // New Y-axis
+      // Y-axis (Left - Cost)
+      svg.append("g")
+        .call(d3.axisLeft(yCost))
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -50)
+        .attr("x", -height / 2)
+        .attr("text-anchor", "middle")
+        .attr("fill", "black")
+        .text("$ Spent On Fuel");
+
+      // Y-axis (Right - Mileage)
       svg.append("g")
         .attr("transform", `translate(${width},0)`)
-        .call(d3.axisRight(yCost));
+        .call(d3.axisRight(yMileage))
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 50)
+        .attr("x", -height / 2)
+        .attr("text-anchor", "middle")
+        .attr("fill", "black")
+        .text("Miles Driven");
 
 const updateGraph = (filteredData) => {
       svg.selectAll(".line").remove();

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <style>
+    :root {
+      --primary-color: #2C3E50; /* Default Palette */
+      --secondary-color: #ECF0F1;
+      --accent-color: #E74C3C;
+      --background-color: #F5F5F5;
+      --text-color: #333;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .section {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .project {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Your Name</h1>
+    <p>Your tagline or mission statement</p>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Welcome to My Portfolio</h2>
+    <p>Discover my projects, skills, and what I’m passionate about.</p>
+  </section>
+
+  <section id="about" class="section">
+    <h2>About Me</h2>
+    <p>Introduce yourself. Share your story, skills, and professional journey.</p>
+  </section>
+
+  <section id="portfolio" class="section">
+    <h2>My Projects</h2>
+    <div class="project" id="project-list">
+      <!-- Project components will render here -->
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Contact Me</h2>
+    <p>Feel free to reach out via the following platforms:</p>
+    <ul>
+      <li><a href="#">LinkedIn</a></li>
+      <li><a href="#">GitHub</a></li>
+      <li><a href="#">Email</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Brand Anthony McDonald. All rights reserved.</p>
+  </footer>
+
+  <script type="text/babel">
+    const ProjectCard = ({ title, description, link }) => (
+      <div className="project-card" style={{
+        background: 'var(--secondary-color)',
+        border: '1px solid var(--primary-color)',
+        borderRadius: '8px',
+        padding: '20px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+      }}>
+        <h3>{title}</h3>
+        <p>{description}</p>
+        <a href={link}>View Project</a>
+      </div>
+    );
+
+    const App = () => {
+      const projects = [
+        { title: "Project 1", description: "Short description of the project and your role.", link: "#" },
+        { title: "Project 2", description: "Short description of the project and your role.", link: "#" }
+      ];
+
+      return (
+        projects.map((project, index) => (
+          <ProjectCard key={index} {...project} />
+        ))
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById('project-list'));
+  </script>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+</body>
+</html>
