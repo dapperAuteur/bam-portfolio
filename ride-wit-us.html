@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gas Mileage Visualization</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .chart {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .tooltip {
+      position: absolute;
+      background-color: white;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gas Mileage and Fuel Investment Visualization</h1>
+    <p>A graphical representation of my car's performance and costs over time.</p>
+  </header>
+
+  <section class="chart" id="chart"></section>
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    const data = [
+      { date: "2024-01", mileage: 25, cost: 100 },
+      { date: "2024-02", mileage: 27, cost: 95 },
+      { date: "2024-03", mileage: 24, cost: 110 },
+      { date: "2024-04", mileage: 28, cost: 90 },
+      { date: "2024-05", mileage: 26, cost: 100 },
+    ];
+
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+    const width = 800 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleTime()
+      .domain(d3.extent(data, d => new Date(d.date)))
+      .range([0, width]);
+
+    const y = d3.scaleLinear()
+      .domain([20, d3.max(data, d => d.mileage)])
+      .range([height, 0]);
+
+    const color = d3.scaleSequential(d3.interpolateBlues)
+      .domain([20, d3.max(data, d => d.cost)]);
+
+    svg.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b")));
+
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()
+        .x(d => x(new Date(d.date)))
+        .y(d => y(d.mileage)));
+
+    svg.selectAll("circle")
+      .data(data)
+      .join("circle")
+      .attr("cx", d => x(new Date(d.date)))
+      .attr("cy", d => y(d.mileage))
+      .attr("r", 5)
+      .attr("fill", d => color(d.cost))
+      .on("mouseover", (event, d) => {
+        d3.select("#tooltip")
+          .style("opacity", 1)
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY}px`)
+          .html(`Date: ${d.date}<br>Mileage: ${d.mileage} mpg<br>Cost: $${d.cost}`);
+      })
+      .on("mouseout", () => {
+        d3.select("#tooltip").style("opacity", 0);
+      });
+  </script>
+</body>
+</html>
