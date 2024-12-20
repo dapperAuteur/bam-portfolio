@@ -157,6 +157,8 @@
     }
   </style>
 <script>window.addEventListener('load', function () { var el = document.createElement('script'); el.setAttribute('src', 'https://client.consolto.com/iframeApp/iframeApp.js'); el.id = 'et-iframe'; el.async = true; el.setAttribute('data-widgetId', '6153673fc026597060d3764a'); el.setAttribute('data-version', 0.5); el.setAttribute('data-test', false); document.body.appendChild(el); }); </script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2C3E50">
 </head>
 <body>
   <header>
@@ -414,5 +416,15 @@ const updateGraph = (filteredData) => {
 
     updateGraph(data);
     };
-  </script></body>
+  </script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js").then(registration => {
+      console.log("Service Worker registered with scope:", registration.scope);
+    }).catch(error => {
+      console.error("Service Worker registration failed:", error);
+    });
+  }
+</script>
+</body>
 </html>
