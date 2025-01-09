@@ -150,8 +150,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Ready to discuss how I can help your team succeed in Developer Relations? Reach out through:
 
-- 💼 LinkedIn: [Brand Anthony McDonald](https://www.linkedin.com/in/brandanthonymcdonald)
-- 💻 GitHub: [dapperAuteur](https://github.com/dapperAuteur)
+- 💼 LinkedIn: [Brand Anthony McDonald](https://l.awews.com/brand-am-linkedin)
+- 💻 GitHub: [dapperAuteur](https://i.til.show/dapperauteur-github)
+- [Blog](https://i.til.show/i-write-code-blog)
 - 📧 Email: a@awews.com
 - 💬 Portfolio Chat: Visit my portfolio and use the chat bubble to connect in real-time
 
